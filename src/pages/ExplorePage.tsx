@@ -4,13 +4,16 @@ import { SearchIcon } from '../components/icons'
 import { Avatar } from '../components/Avatar'
 import { Link } from 'react-router-dom'
 import { Spinner } from '../components/Loaders'
+import WorldCupSection from '../components/WorldCupSection'
+import TrendingImages from '../components/TrendingImages'
+import LearnSection from '../components/LearnSection'
 
 export default function ExplorePage() {
   const [q, setQ] = useState('')
   const { data, isLoading } = useExplore(q)
 
   return (
-    <div className="px-4 md:px-0 py-4 md:py-0 space-y-5">
+    <div className="px-4 md:px-0 py-4 md:py-0 space-y-6">
       <div className="relative">
         <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-ink-400" />
         <input
@@ -20,6 +23,10 @@ export default function ExplorePage() {
           className="input pl-11"
         />
       </div>
+
+      <WorldCupSection />
+      <TrendingImages />
+      <LearnSection />
 
       {isLoading && <div className="card p-10 flex justify-center"><Spinner /></div>}
 
