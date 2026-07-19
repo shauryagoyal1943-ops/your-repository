@@ -15,8 +15,8 @@ export default function PostCard({ post }: { post: Post & { profile: Profile } }
   const [showComments, setShowComments] = useState(false)
   const [draft, setDraft] = useState('')
   const like = useLikePost()
-  const comments = useComments(post.id)
   const addComment = useAddComment(post.id)
+  const comments = useComments(post.id, showComments)
 
   const liked = post.liked_by_me ?? false
   const likeCount = post.like_count ?? 0

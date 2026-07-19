@@ -7,16 +7,31 @@ import { pickImages } from './api'
 const uid = () => useAuthStore.getState().user?.id
 
 /* ---------- Feed ---------- */
-export function useFeed() {
+export function useFeed(offset = 0) {
   return useQuery({
-    queryKey: ['feed'],
+    queryKey: ['feed', offset],
     queryFn: async () => {
-      const { data: posts } = await supabase
-        .from('posts')
-        .select('*, profile:profiles!posts_user_id_profiles_fkey(*)')
-        .order('created_at', { ascending: false })
-        .limit(30)
-      return (posts as any as (Post & { profile: Profile })[]) ?? []
+      const { data, error } = await supabase.rpc('feed', { p_limit: 30, p_offset: offset })
+      if (error) throw error
+      return ((data ?? []) as any[]).map((r) => ({
+        id: r.id,
+        user_id: r.user_id,
+        caption: r.caption,
+        media_urls: r.media_urls ?? [],
+        media_types: r.media_types ?? [],
+        created_at: r.created_at,
+        like_count: r.like_count ?? 0,
+        comment_count: r.comment_count ?? 0,
+        liked_by_me: r.liked_by_me ?? false,
+        profile: {
+          id: r.profile_id,
+          username: r.profile_username,
+          full_name: r.profile_full_name,
+          avatar_url: r.profile_avatar_url,
+          bio: r.profile_bio,
+          website: r.profile_website,
+        } as Profile,
+      })) as (Post & { profile: Profile })[]
     },
   })
 }
@@ -61,14 +76,29 @@ export function useLikePost() {
         })
       }
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['feed'] }),
+    onMutate: async ({ postId, liked }) => {
+      await qc.cancelQueries({ queryKey: ['feed'] })
+      const prev = qc.getQueriesData<{ id: string; liked_by_me?: boolean; like_count?: number }[]>({ queryKey: ['feed'] })
+      qc.setQueriesData<{ id: string; liked_by_me?: boolean; like_count?: number }[]>(
+        { queryKey: ['feed'] },
+        (old) => old?.map((p) => p.id === postId
+          ? { ...p, liked_by_me: !liked, like_count: (p.like_count ?? 0) + (liked ? -1 : 1) }
+          : p),
+      )
+      return { prev }
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.prev) qc.setQueriesData({ queryKey: ['feed'] }, ctx.prev)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: ['feed'] }),
   })
 }
 
 /* ---------- Comments ---------- */
-export function useComments(postId: string) {
+export function useComments(postId: string, enabled = true) {
   return useQuery({
     queryKey: ['comments', postId],
+    enabled,
     queryFn: async () => {
       const { data } = await supabase
         .from('comments')
