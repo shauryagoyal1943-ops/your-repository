@@ -14,6 +14,7 @@ export type Post = {
   user_id: string
   caption: string | null
   media_urls: string[]
+  media_types: string[]
   created_at: string
   profile?: Profile
   like_count?: number

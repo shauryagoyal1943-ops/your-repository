@@ -41,3 +41,11 @@ html.dark ::-webkit-scrollbar-thumb:hover { background: #4a5260; background-clip
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.safe-area-pb { padding-bottom: env(safe-area-inset-bottom, 0); }
+.safe-area-pt { padding-top: env(safe-area-inset-top, 0); }
+
+@media (max-width: 767px) {
+  html { -webkit-text-size-adjust: 100%; }
+  input, textarea, select { font-size: 16px; }
+}

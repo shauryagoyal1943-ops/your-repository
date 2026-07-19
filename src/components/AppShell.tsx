@@ -9,6 +9,7 @@ import {
   PlusIcon, LogoutIcon, GamepadIcon, SunIcon, MoonIcon,
 } from './icons'
 import CreatePostModal from './CreatePostModal'
+import CreateReelModal from './CreateReelModal'
 import FeedPage from '../pages/FeedPage'
 import ExplorePage from '../pages/ExplorePage'
 import ReelsPage from '../pages/ReelsPage'
@@ -29,6 +30,7 @@ const navItems = [
 export default function AppShell() {
   const profile = useAuthStore((s) => s.profile)
   const [showCreate, setShowCreate] = useState(false)
+  const [showReel, setShowReel] = useState(false)
   const navigate = useNavigate()
   const { theme, toggle: toggleTheme } = useTheme()
 
@@ -60,7 +62,11 @@ export default function AppShell() {
           ))}
           <button onClick={() => setShowCreate(true)} className="nav-item w-full">
             <PlusIcon className="h-6 w-6" />
-            <span>Create</span>
+            <span>Create post</span>
+          </button>
+          <button onClick={() => setShowReel(true)} className="nav-item w-full">
+            <ReelsIcon className="h-6 w-6" />
+            <span>Create reel</span>
           </button>
           <NavLink to={`/u/${profile?.username}`} className={({ isActive }) => `nav-item ${isActive ? 'nav-item-active' : ''}`}>
             <Avatar url={profile?.avatar_url} username={profile?.username} size={24} />
@@ -91,6 +97,7 @@ export default function AppShell() {
             {theme === 'dark' ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
           </button>
           <button onClick={() => setShowCreate(true)} className="icon-btn"><PlusIcon className="h-6 w-6" /></button>
+          <button onClick={() => setShowReel(true)} className="icon-btn"><ReelsIcon className="h-6 w-6" /></button>
         </div>
       </header>
 
@@ -111,15 +118,17 @@ export default function AppShell() {
       </main>
 
       {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur border-t border-ink-100 flex items-center justify-around h-16 px-2 dark:bg-ink-900/95 dark:border-ink-800">
-        {navItems.slice(0, 5).map(({ to, Icon, end }) => (
-          <NavLink key={to} to={to} end={end} className={({ isActive }) => `p-2 rounded-xl ${isActive ? 'text-brand-600 dark:text-brand-400' : 'text-ink-500 dark:text-ink-400'}`}>
-            <Icon className="h-6 w-6" />
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur border-t border-ink-100 flex items-center justify-around h-16 px-1 dark:bg-ink-900/95 dark:border-ink-800 safe-area-pb">
+        {navItems.map(({ to, Icon, end, label }) => (
+          <NavLink key={to} to={to} end={end} className={({ isActive }) => `flex flex-col items-center gap-0.5 p-1.5 rounded-xl min-w-0 ${isActive ? 'text-brand-600 dark:text-brand-400' : 'text-ink-500 dark:text-ink-400'}`}>
+            <Icon className="h-5 w-5 shrink-0" />
+            <span className="text-[9px] font-medium truncate">{label}</span>
           </NavLink>
         ))}
       </nav>
 
       {showCreate && <CreatePostModal onClose={() => setShowCreate(false)} />}
+      {showReel && <CreateReelModal onClose={() => setShowReel(false)} />}
     </div>
   )
 }

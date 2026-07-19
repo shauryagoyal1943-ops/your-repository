@@ -1,13 +1,13 @@
 import { supabase } from './supabase'
 import type { Profile } from '../types'
 
-export async function ensureProfile(uid: string, email: string, username: string) {
+export async function ensureProfile(uid: string, email: string, username: string): Promise<Profile> {
   const { data: existing } = await supabase
     .from('profiles')
-    .select('id')
+    .select('*')
     .eq('id', uid)
     .maybeSingle()
-  if (existing) return existing
+  if (existing) return existing as Profile
 
   const { data, error } = await supabase
     .from('profiles')
@@ -16,6 +16,20 @@ export async function ensureProfile(uid: string, email: string, username: string
     .maybeSingle()
   if (error) throw error
   return data as Profile
+}
+
+export type UploadedMedia = { url: string; type: 'image' | 'video' }
+
+export async function uploadMedia(file: File, kind: 'post' | 'reel' | 'story' = 'post'): Promise<UploadedMedia> {
+  const uid = (await supabase.auth.getUser()).data.user?.id
+  if (!uid) throw new Error('Not signed in')
+  const ext = file.name.split('.').pop()?.toLowerCase() || 'bin'
+  const isVideo = file.type.startsWith('video')
+  const path = `${uid}/${kind}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+  const { error } = await supabase.storage.from('media').upload(path, file, { upsert: false })
+  if (error) throw error
+  const { data: pub } = supabase.storage.from('media').getPublicUrl(path)
+  return { url: pub.publicUrl, type: isVideo ? 'video' : 'image' }
 }
 
 export function avatarFor(p?: { avatar_url?: string | null; username?: string | null; full_name?: string | null } | null) {

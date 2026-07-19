@@ -22,6 +22,10 @@ export default function PostCard({ post }: { post: Post & { profile: Profile } }
   const likeCount = post.like_count ?? 0
   const commentCount = comments.data?.length ?? post.comment_count ?? 0
 
+  function mediaType(i: number): 'image' | 'video' {
+    return (post.media_types?.[i] ?? 'image') === 'video' ? 'video' : 'image'
+  }
+
   function onLike() {
     like.mutate({ postId: post.id, liked })
   }
@@ -46,7 +50,11 @@ export default function PostCard({ post }: { post: Post & { profile: Profile } }
 
       {post.media_urls && post.media_urls.length > 0 && (
         <div className="relative bg-ink-900 aspect-square sm:aspect-[4/5] max-h-[640px]">
-          <img src={post.media_urls[idx]} alt="" className="w-full h-full object-cover" />
+          {mediaType(idx) === 'video' ? (
+            <video src={post.media_urls[idx]} controls loop playsInline className="w-full h-full object-cover" />
+          ) : (
+            <img src={post.media_urls[idx]} alt="" className="w-full h-full object-cover" />
+          )}
           {post.media_urls.length > 1 && (
             <>
               {idx > 0 && (

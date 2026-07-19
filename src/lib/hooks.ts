@@ -13,7 +13,7 @@ export function useFeed() {
     queryFn: async () => {
       const { data: posts } = await supabase
         .from('posts')
-        .select('*, profile:profiles!posts_user_id_fkey(*)')
+        .select('*, profile:profiles!posts_user_id_profiles_fkey(*)')
         .order('created_at', { ascending: false })
         .limit(30)
       return (posts as any as (Post & { profile: Profile })[]) ?? []
@@ -24,10 +24,15 @@ export function useFeed() {
 export function useCreatePost() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (vars: { caption: string; media_urls: string[] }) => {
+    mutationFn: async (vars: { caption: string; media_urls: string[]; media_types?: string[] }) => {
       const { data, error } = await supabase
         .from('posts')
-        .insert({ caption: vars.caption, media_urls: vars.media_urls, user_id: uid() })
+        .insert({
+          caption: vars.caption,
+          media_urls: vars.media_urls,
+          media_types: vars.media_types ?? vars.media_urls.map(() => 'image'),
+          user_id: uid(),
+        })
         .select()
         .maybeSingle()
       if (error) throw error
@@ -67,7 +72,7 @@ export function useComments(postId: string) {
     queryFn: async () => {
       const { data } = await supabase
         .from('comments')
-        .select('*, profile:profiles!comments_user_id_fkey(*)')
+        .select('*, profile:profiles!comments_user_id_profiles_fkey(*)')
         .eq('post_id', postId)
         .order('created_at', { ascending: true })
       return (data as any as (Comment & { profile: Profile })[]) ?? []
@@ -82,7 +87,7 @@ export function useAddComment(postId: string) {
       const { data, error } = await supabase
         .from('comments')
         .insert({ post_id: postId, body, user_id: uid() })
-        .select('*, profile:profiles!comments_user_id_fkey(*)')
+        .select('*, profile:profiles!comments_user_id_profiles_fkey(*)')
         .maybeSingle()
       if (error) throw error
       const post = (await supabase.from('posts').select('user_id').eq('id', postId).maybeSingle()).data
@@ -105,7 +110,7 @@ export function useStories() {
       const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
       const { data } = await supabase
         .from('stories')
-        .select('*, profile:profiles!stories_user_id_fkey(*)')
+        .select('*, profile:profiles!stories_user_id_profiles_fkey(*)')
         .gte('created_at', since)
         .order('created_at', { ascending: false })
       return (data as any as (Story & { profile: Profile })[]) ?? []
@@ -131,7 +136,7 @@ export function useReels() {
     queryFn: async () => {
       const { data } = await supabase
         .from('reels')
-        .select('*, profile:profiles!reels_user_id_fkey(*)')
+        .select('*, profile:profiles!reels_user_id_profiles_fkey(*)')
         .order('created_at', { ascending: false })
         .limit(20)
       return (data as any as (Reel & { profile: Profile })[]) ?? []
@@ -245,7 +250,7 @@ export function useNotifications() {
     queryFn: async () => {
       const { data } = await supabase
         .from('notifications')
-        .select('*, actor:profiles!notifications_actor_id_fkey(*)')
+        .select('*, actor:profiles!notifications_actor_id_profiles_fkey(*)')
         .order('created_at', { ascending: false })
         .limit(50)
       return (data as any as (Notification & { actor: Profile })[]) ?? []
@@ -271,7 +276,7 @@ export function useConversations() {
       const me = uid()
       const { data } = await supabase
         .from('messages')
-        .select('*, sender:profiles!messages_sender_id_fkey(*), receiver:profiles!messages_receiver_id_fkey(*)')
+        .select('*, sender:profiles!messages_sender_id_profiles_fkey(*), receiver:profiles!messages_receiver_id_profiles_fkey(*)')
         .or(`sender_id.eq.${me},receiver_id.eq.${me}`)
         .order('created_at', { ascending: false })
       const map = new Map<string, { partner: Profile; last: Message }>()
@@ -333,14 +338,14 @@ export function useExplore(query: string) {
           .limit(10)
         const { data: posts } = await supabase
           .from('posts')
-          .select('*, profile:profiles!posts_user_id_fkey(*)')
+          .select('*, profile:profiles!posts_user_id_profiles_fkey(*)')
           .ilike('caption', `%${query}%`)
           .limit(20)
         return { users: (users as Profile[]) ?? [], posts: (posts as any as (Post & { profile: Profile })[]) ?? [] }
       }
       const { data: posts } = await supabase
         .from('posts')
-        .select('*, profile:profiles!posts_user_id_fkey(*)')
+        .select('*, profile:profiles!posts_user_id_profiles_fkey(*)')
         .order('created_at', { ascending: false })
         .limit(30)
       return { users: [] as Profile[], posts: (posts as any as (Post & { profile: Profile })[]) ?? [] }
@@ -355,7 +360,7 @@ export function useLeaderboard(game: string) {
     queryFn: async () => {
       const { data } = await supabase
         .from('game_scores')
-        .select('*, profile:profiles!game_scores_user_id_fkey(*)')
+        .select('*, profile:profiles!game_scores_user_id_profiles_fkey(*)')
         .eq('game', game)
         .order('score', { ascending: false })
         .limit(10)

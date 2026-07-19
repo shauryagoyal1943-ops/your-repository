@@ -68,10 +68,10 @@ const MATCHES: Match[] = [
 ]
 
 const STATS = [
-  { label: 'Total Goals', value: '172', sub: 'across 64 matches' },
-  { label: 'Top Scorer', value: 'Mbappé', sub: '8 goals' },
-  { label: 'Best Passer', value: 'Rodri', sub: '94% accuracy' },
-  { label: 'Clean Sheets', value: 'Martínez', sub: '4 shutouts' },
+  { label: 'Total Goals', value: '187', sub: 'across 104 matches' },
+  { label: 'Top Scorer', value: 'Mbappé', sub: '9 goals · Golden Boot' },
+  { label: 'Best Playmaker', value: 'Lamine Yamal', sub: '7 assists · Golden Ball' },
+  { label: 'Clean Sheets', value: 'E. Martínez', sub: '5 shutouts · Golden Glove' },
 ]
 
 export default function WorldCupSection() {
