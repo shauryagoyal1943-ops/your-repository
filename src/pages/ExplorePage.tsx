@@ -5,6 +5,8 @@ import { Avatar } from '../components/Avatar'
 import { Link } from 'react-router-dom'
 import { Spinner } from '../components/Loaders'
 import WorldCupSection from '../components/WorldCupSection'
+import CricketSection from '../components/CricketSection'
+import TennisSection from '../components/TennisSection'
 import TrendingImages from '../components/TrendingImages'
 import LearnSection from '../components/LearnSection'
 
@@ -25,6 +27,8 @@ export default function ExplorePage() {
       </div>
 
       <WorldCupSection />
+      <CricketSection />
+      <TennisSection />
       <TrendingImages />
       <LearnSection />
 
