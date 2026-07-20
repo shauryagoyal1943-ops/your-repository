@@ -35,10 +35,12 @@ export default function AuthScreen() {
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [info, setInfo] = useState<string | null>(null)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
+    setInfo(null)
     setLoading(true)
     try {
       if (mode === 'login') {
@@ -61,6 +63,8 @@ export default function AuthScreen() {
 
   async function signInWithProvider(provider: Provider) {
     setError(null)
+    setInfo(null)
+    setLoading(true)
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider as any,
@@ -68,7 +72,14 @@ export default function AuthScreen() {
       })
       if (error) throw error
     } catch (err: any) {
-      setError(err.message || `${provider} sign-in is not configured on this project yet`)
+      const msg = err?.message || ''
+      if (msg.toLowerCase().includes('provider') || msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('disabled')) {
+        setInfo(`${provider[0].toUpperCase()}${provider.slice(1)} sign-in is not enabled for this project yet. Use email/password, or ask the project owner to enable it in the Supabase dashboard under Authentication → Providers.`)
+      } else {
+        setError(msg || `${provider} sign-in failed. Please try again.`)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -105,73 +116,81 @@ export default function AuthScreen() {
       </div>
 
       {/* Right form panel */}
-      <div className="flex-1 flex items-center justify-center p-5 sm:p-10">
+      <div className="flex-1 flex items-center justify-center p-5 sm:p-10 bg-ink-50 dark:bg-ink-950">
         <div className="w-full max-w-sm animate-slide-up">
           <div className="lg:hidden flex items-center gap-2.5 mb-6 justify-center">
             <Logo className="h-8 w-8 text-brand-600" />
             <span className="font-display text-xl font-extrabold text-ink-900 dark:text-ink-50">CONNECT</span>
           </div>
 
-          <h2 className="font-display text-2xl font-bold text-ink-900 dark:text-ink-50">
-            {mode === 'login' ? 'Welcome back' : 'Create your account'}
-          </h2>
-          <p className="text-ink-500 dark:text-ink-400 text-sm mt-1 mb-5">
-            {mode === 'login' ? 'Sign in to continue to CONNECT.' : 'Join the CONNECT community today.'}
-          </p>
+          <div className="card p-6 sm:p-8 shadow-pop">
+            <h2 className="font-display text-2xl font-bold text-ink-900 dark:text-ink-50">
+              {mode === 'login' ? 'Welcome back' : 'Create your account'}
+            </h2>
+            <p className="text-ink-500 dark:text-ink-400 text-sm mt-1 mb-5">
+              {mode === 'login' ? 'Sign in to continue to CONNECT.' : 'Join the CONNECT community today.'}
+            </p>
 
-          <form onSubmit={submit} className="space-y-3.5">
-            {mode === 'signup' && (
-              <div>
-                <label className="text-xs font-semibold text-ink-600 mb-1.5 block">Username</label>
-                <input className="input" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="your_handle" autoComplete="username" />
-              </div>
-            )}
-            <div>
-              <label className="text-xs font-semibold text-ink-600 mb-1.5 block">Email</label>
-              <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" required />
-            </div>
-            <div>
-              <label className="text-xs font-semibold text-ink-600 mb-1.5 block">Password</label>
-              <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} required minLength={1} />
+            <form onSubmit={submit} className="space-y-3.5">
               {mode === 'signup' && (
-                <p className="text-[11px] text-ink-400 mt-1">Choose any password you like — no restrictions.</p>
+                <div>
+                  <label className="text-xs font-semibold text-ink-600 dark:text-ink-300 mb-1.5 block">Username</label>
+                  <input className="input" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="your_handle" autoComplete="username" />
+                </div>
               )}
+              <div>
+                <label className="text-xs font-semibold text-ink-600 dark:text-ink-300 mb-1.5 block">Email</label>
+                <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" required />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-ink-600 dark:text-ink-300 mb-1.5 block">Password</label>
+                <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} required minLength={1} />
+                {mode === 'signup' && (
+                  <p className="text-[11px] text-ink-400 mt-1">Choose any password you like — no restrictions.</p>
+                )}
+              </div>
+
+              {error && (
+                <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 animate-fade-in">
+                  {error}
+                </div>
+              )}
+              {info && (
+                <div className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 animate-fade-in">
+                  {info}
+                </div>
+              )}
+
+              <button type="submit" className="btn-primary w-full" disabled={loading}>
+                {loading ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
+              </button>
+            </form>
+
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-1 h-px bg-ink-200 dark:bg-ink-800" />
+              <span className="text-xs text-ink-400 font-medium">or continue with</span>
+              <div className="flex-1 h-px bg-ink-200 dark:bg-ink-800" />
             </div>
 
-            {error && (
-              <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 animate-fade-in">
-                {error}
-              </div>
-            )}
-
-            <button type="submit" className="btn-primary w-full" disabled={loading}>
-              {loading ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'}
-            </button>
-          </form>
-
-          <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-ink-200 dark:bg-ink-800" />
-            <span className="text-xs text-ink-400 font-medium">or continue with</span>
-            <div className="flex-1 h-px bg-ink-200 dark:bg-ink-800" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-2.5">
-            {PROVIDERS.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => signInWithProvider(p.id)}
-                className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold transition active:scale-[0.98] ${p.bg}`}
-              >
-                <ProviderIcon id={p.id} />
-                <span className="hidden sm:inline">{p.label}</span>
-              </button>
-            ))}
+            <div className="grid grid-cols-2 gap-2.5">
+              {PROVIDERS.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => signInWithProvider(p.id)}
+                  disabled={loading}
+                  className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-60 ${p.bg}`}
+                >
+                  <ProviderIcon id={p.id} />
+                  <span className="hidden sm:inline">{p.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="mt-5 text-center text-sm text-ink-500 dark:text-ink-400">
             {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
             <button
-              onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(null) }}
+              onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(null); setInfo(null) }}
               className="text-brand-600 dark:text-brand-400 font-semibold hover:text-brand-700 dark:hover:text-brand-300"
             >
               {mode === 'login' ? 'Sign up' : 'Sign in'}

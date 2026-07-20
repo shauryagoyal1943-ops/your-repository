@@ -1,19 +1,15 @@
-import { useEffect } from 'react'
-import { useFeed, useStories, seedDemoContent } from '../lib/hooks'
+import { useFeed, useStories } from '../lib/hooks'
 import PostCard from '../components/PostCard'
 import StoriesBar from '../components/StoriesBar'
+import BlogSection from '../components/BlogSection'
 import { Spinner } from '../components/Loaders'
 
 export default function FeedPage() {
   const { data: posts, isLoading } = useFeed()
   const stories = useStories()
 
-  useEffect(() => {
-    seedDemoContent()
-  }, [])
-
   return (
-    <div className="px-3 md:px-0 space-y-5">
+    <div className="px-3 md:px-0 space-y-6">
       <StoriesBar />
       <div className="space-y-5">
         {isLoading ? (
@@ -26,6 +22,7 @@ export default function FeedPage() {
           </div>
         )}
       </div>
+      <BlogSection />
     </div>
   )
 }

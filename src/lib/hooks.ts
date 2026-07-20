@@ -409,27 +409,3 @@ export function useSubmitScore() {
     onSuccess: (_d, vars) => qc.invalidateQueries({ queryKey: ['leaderboard', vars.game] }),
   })
 }
-
-/* ---------- Seed ---------- */
-export async function seedDemoContent() {
-  const me = uid()
-  if (!me) return
-  const { count } = await supabase.from('posts').select('id', { count: 'exact', head: true }).eq('user_id', me)
-  if ((count ?? 0) > 0) return
-  const captions = [
-    'Morning views to start the week right.',
-    'Shipping a new feature today. Big day.',
-    'Coffee + code = flow state.',
-    'Weekend hike hit different.',
-    'Sketching ideas for the next project.',
-  ]
-  for (const caption of captions) {
-    await supabase.from('posts').insert({ caption, media_urls: pickImages(1 + Math.floor(Math.random() * 3)), user_id: me })
-  }
-  await supabase.from('stories').insert({ media_url: pickImages(1)[0], user_id: me })
-  await supabase.from('reels').insert({
-    video_url: 'https://videos.pexels.com/video-files/3209828/3209828-uhd_3840_2160_24fps.mp4',
-    caption: 'Golden hour run.',
-    user_id: me,
-  })
-}
