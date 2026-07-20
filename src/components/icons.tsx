@@ -19,9 +19,6 @@ export const HomeIcon = (p: P) => (
 export const CompassIcon = (p: P) => (
   <svg {...base(p)}><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5z" /></svg>
 )
-export const ReelsIcon = (p: P) => (
-  <svg {...base(p)}><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M3 8h18M8 3v18M16 3v18" /><path d="m11 11 3 1.5-3 1.5z" fill="currentColor" stroke="none" /></svg>
-)
 export const MessageIcon = (p: P) => (
   <svg {...base(p)}><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1 1 21 11.5z" /></svg>
 )

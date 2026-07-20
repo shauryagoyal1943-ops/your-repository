@@ -5,14 +5,12 @@ import { useTheme } from '../hooks/useTheme'
 import { supabase } from '../lib/supabase'
 import { Avatar } from './Avatar'
 import {
-  HomeIcon, CompassIcon, ReelsIcon, MessageIcon, BellIcon, UserIcon,
+  HomeIcon, CompassIcon, MessageIcon, BellIcon, UserIcon,
   PlusIcon, LogoutIcon, GamepadIcon, SunIcon, MoonIcon,
 } from './icons'
 import CreatePostModal from './CreatePostModal'
-import CreateReelModal from './CreateReelModal'
 import FeedPage from '../pages/FeedPage'
 import ExplorePage from '../pages/ExplorePage'
-import ReelsPage from '../pages/ReelsPage'
 import MessagesPage from '../pages/MessagesPage'
 import NotificationsPage from '../pages/NotificationsPage'
 import ProfilePage from '../pages/ProfilePage'
@@ -21,7 +19,6 @@ import GamesPage from '../pages/GamesPage'
 const navItems = [
   { to: '/', label: 'Home', Icon: HomeIcon, end: true },
   { to: '/explore', label: 'Explore', Icon: CompassIcon },
-  { to: '/reels', label: 'Reels', Icon: ReelsIcon },
   { to: '/messages', label: 'Messages', Icon: MessageIcon },
   { to: '/notifications', label: 'Notifications', Icon: BellIcon },
   { to: '/games', label: 'Games', Icon: GamepadIcon },
@@ -30,7 +27,6 @@ const navItems = [
 export default function AppShell() {
   const profile = useAuthStore((s) => s.profile)
   const [showCreate, setShowCreate] = useState(false)
-  const [showReel, setShowReel] = useState(false)
   const navigate = useNavigate()
   const { theme, toggle: toggleTheme } = useTheme()
 
@@ -64,10 +60,6 @@ export default function AppShell() {
             <PlusIcon className="h-6 w-6" />
             <span>Create post</span>
           </button>
-          <button onClick={() => setShowReel(true)} className="nav-item w-full">
-            <ReelsIcon className="h-6 w-6" />
-            <span>Create reel</span>
-          </button>
           <NavLink to={`/u/${profile?.username}`} className={({ isActive }) => `nav-item ${isActive ? 'nav-item-active' : ''}`}>
             <Avatar url={profile?.avatar_url} username={profile?.username} size={24} />
             <span>Profile</span>
@@ -97,7 +89,6 @@ export default function AppShell() {
             {theme === 'dark' ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
           </button>
           <button onClick={() => setShowCreate(true)} className="icon-btn"><PlusIcon className="h-6 w-6" /></button>
-          <button onClick={() => setShowReel(true)} className="icon-btn"><ReelsIcon className="h-6 w-6" /></button>
         </div>
       </header>
 
@@ -107,7 +98,6 @@ export default function AppShell() {
           <Routes>
             <Route path="/" element={<FeedPage />} />
             <Route path="/explore" element={<ExplorePage />} />
-            <Route path="/reels" element={<ReelsPage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/games" element={<GamesPage />} />
@@ -128,7 +118,6 @@ export default function AppShell() {
       </nav>
 
       {showCreate && <CreatePostModal onClose={() => setShowCreate(false)} />}
-      {showReel && <CreateReelModal onClose={() => setShowReel(false)} />}
     </div>
   )
 }

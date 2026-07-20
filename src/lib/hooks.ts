@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import { useAuthStore } from '../store/auth'
-import type { Post, Comment, Story, Reel, Notification, Message, GameScore, Profile } from '../types'
+import type { Post, Comment, Story, Notification, Message, GameScore, Profile } from '../types'
 import { pickImages } from './api'
 
 const uid = () => useAuthStore.getState().user?.id
@@ -156,32 +156,6 @@ export function useCreateStory() {
       if (error) throw error
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['stories'] }),
-  })
-}
-
-/* ---------- Reels ---------- */
-export function useReels() {
-  return useQuery({
-    queryKey: ['reels'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('reels')
-        .select('*, profile:profiles!reels_user_id_profiles_fkey(*)')
-        .order('created_at', { ascending: false })
-        .limit(20)
-      return (data as any as (Reel & { profile: Profile })[]) ?? []
-    },
-  })
-}
-
-export function useCreateReel() {
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: async (vars: { video_url: string; caption: string }) => {
-      const { error } = await supabase.from('reels').insert({ ...vars, user_id: uid() })
-      if (error) throw error
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['reels'] }),
   })
 }
 

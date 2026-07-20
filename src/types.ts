@@ -39,15 +39,6 @@ export type Story = {
   profile?: Profile
 }
 
-export type Reel = {
-  id: string
-  user_id: string
-  video_url: string
-  caption: string | null
-  created_at: string
-  profile?: Profile
-}
-
 export type Notification = {
   id: string
   user_id: string

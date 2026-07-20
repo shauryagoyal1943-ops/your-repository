@@ -20,7 +20,7 @@ export async function ensureProfile(uid: string, email: string, username: string
 
 export type UploadedMedia = { url: string; type: 'image' | 'video' }
 
-export async function uploadMedia(file: File, kind: 'post' | 'reel' | 'story' = 'post'): Promise<UploadedMedia> {
+export async function uploadMedia(file: File, kind: 'post' | 'story' = 'post'): Promise<UploadedMedia> {
   const uid = (await supabase.auth.getUser()).data.user?.id
   if (!uid) throw new Error('Not signed in')
   const ext = file.name.split('.').pop()?.toLowerCase() || 'bin'
