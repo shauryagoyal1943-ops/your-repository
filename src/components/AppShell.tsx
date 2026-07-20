@@ -6,11 +6,12 @@ import { supabase } from '../lib/supabase'
 import { Avatar } from './Avatar'
 import {
   HomeIcon, CompassIcon, MessageIcon, BellIcon, UserIcon,
-  PlusIcon, LogoutIcon, GamepadIcon, SunIcon, MoonIcon,
+  PlusIcon, LogoutIcon, GamepadIcon, BookIcon, SunIcon, MoonIcon,
 } from './icons'
 import CreatePostModal from './CreatePostModal'
 import FeedPage from '../pages/FeedPage'
 import ExplorePage from '../pages/ExplorePage'
+import BlogsPage from '../pages/BlogsPage'
 import MessagesPage from '../pages/MessagesPage'
 import NotificationsPage from '../pages/NotificationsPage'
 import ProfilePage from '../pages/ProfilePage'
@@ -19,6 +20,7 @@ import GamesPage from '../pages/GamesPage'
 const navItems = [
   { to: '/', label: 'Home', Icon: HomeIcon, end: true },
   { to: '/explore', label: 'Explore', Icon: CompassIcon },
+  { to: '/blogs', label: 'Blogs', Icon: BookIcon },
   { to: '/messages', label: 'Messages', Icon: MessageIcon },
   { to: '/notifications', label: 'Notifications', Icon: BellIcon },
   { to: '/games', label: 'Games', Icon: GamepadIcon },
@@ -98,6 +100,7 @@ export default function AppShell() {
           <Routes>
             <Route path="/" element={<FeedPage />} />
             <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/blogs" element={<BlogsPage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/games" element={<GamesPage />} />

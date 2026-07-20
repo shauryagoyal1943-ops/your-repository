@@ -66,3 +66,15 @@ export type GameScore = {
   created_at: string
   profile?: Profile
 }
+
+export type Blog = {
+  id: string
+  title: string
+  body: string
+  category: string
+  author_name: string | null
+  cover_emoji: string
+  user_id: string | null
+  created_at: string
+  profile?: Profile
+}

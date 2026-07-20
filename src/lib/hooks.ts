@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from './supabase'
 import { useAuthStore } from '../store/auth'
-import type { Post, Comment, Story, Notification, Message, GameScore, Profile } from '../types'
+import type { Post, Comment, Story, Notification, Message, GameScore, Profile, Blog } from '../types'
 import { pickImages } from './api'
 
 const uid = () => useAuthStore.getState().user?.id
@@ -381,5 +381,41 @@ export function useSubmitScore() {
       if (error) throw error
     },
     onSuccess: (_d, vars) => qc.invalidateQueries({ queryKey: ['leaderboard', vars.game] }),
+  })
+}
+
+/* ---------- Blogs ---------- */
+export function useBlogs() {
+  return useQuery({
+    queryKey: ['blogs'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('blogs')
+        .select('*, profile:profiles!blogs_user_id_profiles_fkey(*)')
+        .order('created_at', { ascending: false })
+      return (data as any as (Blog & { profile: Profile })[]) ?? []
+    },
+  })
+}
+
+export function useCreateBlog() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (vars: { title: string; body: string; category: string; cover_emoji: string }) => {
+      const { error } = await supabase.from('blogs').insert({ ...vars, user_id: uid() })
+      if (error) throw error
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['blogs'] }),
+  })
+}
+
+export function useDeleteBlog() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('blogs').delete().eq('id', id)
+      if (error) throw error
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['blogs'] }),
   })
 }
