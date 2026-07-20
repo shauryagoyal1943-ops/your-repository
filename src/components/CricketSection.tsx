@@ -18,60 +18,59 @@ type CricketMatch = {
 const MATCHES: CricketMatch[] = [
   {
     id: 1,
-    stage: '3rd Test · Day 4',
-    date: 'Jul 19, 2026',
+    stage: '3rd ODI · Series Decider',
+    date: 'Jul 20, 2026',
     home: 'England',
     away: 'India',
     homeFlag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
     awayFlag: '🇮🇳',
-    score: 'ENG 427 & 198/4',
-    status: 'Live',
-    detail: 'India need 312 more to win · Lead 86',
+    score: 'ENG won by 27 runs',
+    status: 'Result',
+    detail: 'England win the 3-match series 2-1 · Lord\'s',
     innings: [
-      { team: 'home', runs: 427, wickets: 10, overs: '128.3' },
-      { team: 'away', runs: 314, wickets: 10, overs: '104.1' },
-      { team: 'home', runs: 198, wickets: 4, overs: '62.0' },
+      { team: 'home', runs: 387, wickets: 3, overs: '50.0' },
+      { team: 'away', runs: 360, wickets: 7, overs: '50.0' },
     ],
-    highlight: 'Root anchored the 1st innings with 156, while Bumrah took 6/48. India trail by 86 with 6 sessions left at Lord\'s.',
+    highlight: 'England blasted 387/3 behind Ben Duckett\'s 142 and Jacob Bethell\'s 91. India replied with 360/7 — Rohit Sharma 138, Shubman Gill 77, Virat Kohli 74 — but fell 27 short. Bethell was Player of the Match; Joe Root Player of the Series.',
   },
   {
     id: 2,
-    stage: '2nd ODI',
-    date: 'Jul 20, 2026',
-    home: 'Australia',
-    away: 'Pakistan',
-    homeFlag: '🇦🇺',
-    awayFlag: '🇵🇰',
-    score: 'vs',
-    status: 'Upcoming',
-    detail: 'Series tied 1-1 · MCG · 09:30 local',
-    innings: [],
-    highlight: 'Series decider at the MCG — Australia levelled the series with a 5-wicket win in Adelaide courtesy of Head\'s 112.',
+    stage: '4th ODI',
+    date: 'Jul 19, 2026',
+    home: 'West Indies',
+    away: 'New Zealand',
+    homeFlag: '🇧🇧',
+    awayFlag: '🇳🇿',
+    score: 'NZ won by 1 wicket',
+    status: 'Result',
+    detail: 'New Zealand lead the series 3-1 · Kensington Oval',
+    innings: [
+      { team: 'home', runs: 188, wickets: 10, overs: '47.2' },
+      { team: 'away', runs: 189, wickets: 9, overs: '48.5' },
+    ],
+    highlight: 'A low-scoring thriller — Mark Chapman\'s 80 was the backbone of West Indies\' 188 all out. Chasing, skipper Mitchell Santner (34*) held his nerve in a 9-run final-wicket stand with Jayden Lennox to seal a 1-wicket win and an unassailable 3-1 series lead.',
   },
   {
     id: 3,
-    stage: '1st ODI',
-    date: 'Jul 18, 2026',
-    home: 'Sri Lanka',
-    away: 'South Africa',
-    homeFlag: '🇱🇰',
-    awayFlag: '🇿🇦',
-    score: 'SL 232 all out',
+    stage: '3rd T20I',
+    date: 'Jul 19, 2026',
+    home: 'Zimbabwe',
+    away: 'Bangladesh',
+    homeFlag: '🇿🇼',
+    awayFlag: '🇧🇩',
+    score: 'Series tied 1-1',
     status: 'Result',
-    detail: 'South Africa won by 4 wickets (23 balls remaining)',
-    innings: [
-      { team: 'home', runs: 232, wickets: 10, overs: '47.4' },
-      { team: 'away', runs: 236, wickets: 6, overs: '46.1' },
-    ],
-    highlight: 'Markram\'s unbeaten 88 guided the Proteas home after Maharaj\'s 4/33 had restricted Sri Lanka in Colombo.',
+    detail: 'Series level after 3 matches',
+    innings: [],
+    highlight: 'The 3rd T20I concluded yesterday with the series tied 1-1 going into the decider.',
   },
 ]
 
 const STATS = [
-  { label: 'Top Run-scorer', value: 'J. Root', sub: '642 runs · avg 91.7' },
-  { label: 'Leading Wickets', value: 'J. Bumrah', sub: '24 wickets · 4 maidens' },
-  { label: 'Highest Score', value: 'H. Amla Jr.', sub: '184 vs Sri Lanka' },
-  { label: 'Live Now', value: 'ENG vs IND', sub: 'Lord\'s · Day 4' },
+  { label: 'POTM (ENG vs IND)', value: 'J. Bethell', sub: '91 runs · 1 wicket' },
+  { label: 'Player of Series', value: 'J. Root', sub: 'England vs India ODI' },
+  { label: 'Top Score', value: 'B. Duckett', sub: '142 off 128 balls' },
+  { label: 'Series Result', value: 'ENG 2-1 IND', sub: 'Won by 27 runs · Lord\'s' },
 ]
 
 export default function CricketSection() {
@@ -84,7 +83,7 @@ export default function CricketSection() {
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <span className="text-lg">🏏</span>
-        <h3 className="font-display font-bold text-base">Cricket · Latest Scores</h3>
+        <h3 className="font-display font-bold text-base">International Cricket · Results</h3>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -111,7 +110,7 @@ export default function CricketSection() {
                   <span className="text-sm font-medium">{m.home}</span>
                   <span className="text-xl">{m.homeFlag}</span>
                 </div>
-                <div className="flex flex-col items-center min-w-[90px]">
+                <div className="flex flex-col items-center min-w-[110px]">
                   <span className="font-display font-bold text-xs text-center leading-tight">{m.score}</span>
                 </div>
                 <div className="flex items-center gap-2 flex-1">

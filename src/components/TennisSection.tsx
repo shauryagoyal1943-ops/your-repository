@@ -18,79 +18,82 @@ type TennisMatch = {
 const MATCHES: TennisMatch[] = [
   {
     id: 1,
-    stage: 'Wimbledon · Men\'s Final',
+    stage: 'Gentlemen\'s Singles Final',
     date: 'Jul 19, 2026',
-    player1: 'C. Alcaraz',
-    player2: 'J. Sinner',
-    flag1: '🇪🇸',
-    flag2: '🇮🇹',
-    sets: '2 sets to 1',
-    status: 'Live',
-    setScores: [
-      { p1: '6', p2: '4' },
-      { p1: '3', p2: '6' },
-      { p1: '5', p2: '4' },
-    ],
-    detail: 'Alcaraz serving for the 4th set · Centre Court',
-    highlight: 'A rematch of last year\'s epic — Alcaraz took the 1st set before Sinner leveled. The Spaniard broke at 4-4 in the 3rd and is closing in on a 4th set lead.',
-  },
-  {
-    id: 2,
-    stage: 'Wimbledon · Women\'s Final',
-    date: 'Jul 18, 2026',
-    player1: 'A. Sabalenka',
-    player2: 'C. Gauff',
-    flag1: '🇧🇾',
-    flag2: '🇺🇸',
-    sets: '2 sets to 0',
-    status: 'Result',
-    setScores: [
-      { p1: '7', p2: '5' },
-      { p1: '6', p2: '3' },
-    ],
-    detail: 'Sabalenka won 7-5, 6-3 · 1h 42m',
-    highlight: 'Sabalenka claimed her 2nd Wimbledon title with a dominant serving display, landing 78% of first serves and saving all 4 break points faced.',
-  },
-  {
-    id: 3,
-    stage: 'Wimbledon · Men\'s SF',
-    date: 'Jul 17, 2026',
     player1: 'J. Sinner',
-    player2: 'N. Djokovic',
+    player2: 'A. Zverev',
     flag1: '🇮🇹',
-    flag2: '🇷🇸',
+    flag2: '🇩🇪',
     sets: '3 sets to 1',
     status: 'Result',
     setScores: [
       { p1: '6', p2: '7' },
-      { p1: '7', p2: '5' },
+      { p1: '7', p2: '6' },
       { p1: '6', p2: '3' },
+      { p1: '6', p2: '4' },
+    ],
+    detail: 'Sinner won 6-7, 7-6, 6-3, 6-4 · Retained Wimbledon crown',
+    highlight: 'Jannik Sinner retained his Wimbledon title with a brutal 4-set baseline war against Alexander Zverev. After dropping the opening tiebreak, Sinner leveled with a tiebreak of his own before pulling away in sets 3 and 4 to seal back-to-back Championships.',
+  },
+  {
+    id: 2,
+    stage: 'Ladies\' Singles Final',
+    date: 'Jul 18, 2026',
+    player1: 'L. Nosková',
+    player2: 'K. Muchová',
+    flag1: '🇨🇿',
+    flag2: '🇨🇿',
+    sets: '2 sets to 1',
+    status: 'Result',
+    setScores: [
+      { p1: '6', p2: '2' },
+      { p1: '5', p2: '7' },
+      { p1: '6', p2: '3' },
+    ],
+    detail: 'Nosková won 6-2, 5-7, 6-3 · Maiden Grand Slam title',
+    highlight: 'Linda Nosková captured her maiden Grand Slam championship, pulling out a 3-set win over Karolína Muchová. After dominating the opener, Nosková regrouped after dropping the 2nd set to close it out 6-3 in the decider.',
+  },
+  {
+    id: 3,
+    stage: 'Gentlemen\'s Doubles Final',
+    date: 'Jul 19, 2026',
+    player1: 'Patten / Heliövaara',
+    player2: 'Pavić / Arévalo',
+    flag1: '🇬🇧🇫🇮',
+    flag2: '🇭🇷🇸🇻',
+    sets: '2 sets to 0',
+    status: 'Result',
+    setScores: [
+      { p1: '7', p2: '6' },
       { p1: '7', p2: '6' },
     ],
-    detail: 'Sinner won 6-7, 7-5, 6-3, 7-6 · 3h 18m',
-    highlight: 'Sinner recovered from dropping the opening tiebreak to end Djokovic\'s Wimbledon campaign in a tense 4-setter on Centre Court.',
+    detail: 'Won in straight tiebreaks · Both sets 7-6',
+    highlight: 'Henry Patten & Harri Heliövaara defeated Mate Pavić & Marcelo Arévalo in straight tiebreaks to claim the Gentlemen\'s Doubles crown.',
   },
   {
     id: 4,
-    stage: 'ATP Washington · R16',
-    date: 'Jul 21, 2026',
-    player1: 'T. Fritz',
-    player2: 'B. Shelton',
-    flag1: '🇺🇸',
-    flag2: '🇺🇸',
-    sets: 'vs',
-    status: 'Upcoming',
-    setScores: [],
-    detail: 'All-American clash · 2nd on Stadium Court',
-    highlight: 'Fritz leads the head-to-head 3-2 but Shelton took their most recent meeting in Atlanta last month in three tight sets.',
+    stage: 'Ladies\' Doubles Final',
+    date: 'Jul 18, 2026',
+    player1: 'Guo / Mladenovic',
+    player2: 'Stefani / Dabrowski',
+    flag1: '🇨🇳🇫🇷',
+    flag2: '🇧🇷🇨🇦',
+    sets: '2 sets to 0',
+    status: 'Result',
+    setScores: [
+      { p1: '7', p2: '5' },
+      { p1: '7', p2: '5' },
+    ],
+    detail: 'Won 7-5, 7-5 · Ladies\' Doubles Champions',
+    highlight: 'Guo Hanyu & Kristina Mladenovic defeated Luisa Stefani & Gabriela Dabrowski 7-5, 7-5 to claim the Ladies\' Doubles title at Wimbledon.',
   },
 ]
 
 const STATS = [
-  { label: 'Champion (W)', value: 'Sabalenka', sub: '2nd Wimbledon title' },
-  { label: 'Aces Leader', value: 'G. Dimitrov', sub: '127 aces · 81% won' },
-  { label: 'Break Points', value: 'C. Alcaraz', sub: '24/38 converted' },
-  { label: 'Live Now', value: 'Alcaraz vs Sinner', sub: 'Men\'s Final · Set 4' },
+  { label: 'Men\'s Champion', value: 'J. Sinner', sub: 'Retained · 2nd Wimbledon' },
+  { label: 'Women\'s Champion', value: 'L. Nosková', sub: 'Maiden Grand Slam title' },
+  { label: 'Men\'s Doubles', value: 'Patten / Heliövaara', sub: 'Straight tiebreaks' },
+  { label: 'Women\'s Doubles', value: 'Guo / Mladenovic', sub: '7-5, 7-5' },
 ]
 
 export default function TennisSection() {
@@ -103,7 +106,7 @@ export default function TennisSection() {
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <span className="text-lg">🎾</span>
-        <h3 className="font-display font-bold text-base">Tennis · Latest Scores</h3>
+        <h3 className="font-display font-bold text-base">Wimbledon 2026 · Finals Wrap-up</h3>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -145,16 +148,17 @@ export default function TennisSection() {
                     <div className="mt-3 overflow-hidden rounded-lg border border-ink-100 dark:border-ink-800">
                       <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 px-3 py-2 bg-ink-50 dark:bg-ink-800/50 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-ink-400">
                         <span>Player</span>
-                        <span className="text-center w-8">P1</span>
-                        <span className="text-center w-8">P2</span>
+                        {m.setScores.map((_, i) => (
+                          <span key={i} className="text-center w-8">S{i + 1}</span>
+                        ))}
                       </div>
-                      <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 px-3 py-2 text-sm">
+                      <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 px-3 py-2 text-sm items-center">
                         <span className="flex items-center gap-1.5 font-medium"><span className="text-base">{m.flag1}</span>{m.player1}</span>
                         {m.setScores.map((s, i) => (
                           <span key={i} className="text-center w-8 font-mono font-semibold">{s.p1}</span>
                         ))}
                       </div>
-                      <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 px-3 py-2 text-sm border-t border-ink-100 dark:border-ink-800">
+                      <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 px-3 py-2 text-sm border-t border-ink-100 dark:border-ink-800 items-center">
                         <span className="flex items-center gap-1.5 font-medium"><span className="text-base">{m.flag2}</span>{m.player2}</span>
                         {m.setScores.map((s, i) => (
                           <span key={i} className="text-center w-8 font-mono font-semibold">{s.p2}</span>

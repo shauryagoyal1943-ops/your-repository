@@ -17,15 +17,17 @@ type Match = {
 const MATCHES: Match[] = [
   {
     id: 1,
-    stage: 'Final',
+    stage: 'Final · AET',
     date: 'Jul 19, 2026',
     home: 'Spain',
     away: 'Argentina',
     homeFlag: '🇪🇸',
     awayFlag: '🇦🇷',
-    score: 'vs',
-    scorers: [],
-    highlight: 'Reaching the pinnacle match of the first-ever 48-team tournament, reigning champions Argentina look to defend their crown against a brilliant Spanish squad at MetLife Stadium, New York New Jersey. Kickoff Jul 20, 00:30 IST (Jul 19, 15:00 local).',
+    score: '1 - 0',
+    scorers: [
+      { name: 'F. Torres', team: 'home', minute: '106' },
+    ],
+    highlight: 'Spain are World Champions! Ferran Torres clinically converted a Nico Williams cross in the 106th minute of extra time to break the deadlock. Argentina played with 10 men after Enzo Fernández picked up a second yellow card in the 93rd minute.',
   },
   {
     id: 2,
@@ -71,10 +73,10 @@ const MATCHES: Match[] = [
 ]
 
 const STATS = [
-  { label: 'Top Scorer', value: 'Mbappé', sub: '10 goals · 4 assists · Golden Boot' },
+  { label: 'Champions', value: '🇪🇸 Spain', sub: 'Beat Argentina 1-0 (AET)' },
+  { label: 'Golden Boot', value: 'Mbappé', sub: '10 goals · 4 assists · France' },
   { label: 'All-time WC Scorer', value: 'Mbappé', sub: '22 career WC goals (record)' },
-  { label: 'Top Playmaker', value: 'M. Olise', sub: '7 assists · France' },
-  { label: 'Final Today', value: 'ESP vs ARG', sub: 'MetLife Stadium · Jul 19' },
+  { label: 'Final Goal', value: 'F. Torres', sub: '106\' · assist N. Williams' },
 ]
 
 export default function WorldCupSection() {
@@ -84,10 +86,19 @@ export default function WorldCupSection() {
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <TrophyIcon className="h-5 w-5 text-accent-500" />
-        <h3 className="font-display font-bold text-base">FIFA World Cup 2026</h3>
+        <h3 className="font-display font-bold text-base">FIFA World Cup 2026 · Concluded</h3>
       </div>
 
-      {/* Stats strip */}
+      <div className="card p-4 bg-gradient-to-r from-accent-500/10 to-accent-400/5 border-accent-200 dark:border-accent-800/50">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">🏆</span>
+          <div>
+            <p className="font-display font-bold text-lg">Spain are World Champions</p>
+            <p className="text-sm text-ink-600 dark:text-ink-300">1-0 vs Argentina (AET) · Ferran Torres 106'</p>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {STATS.map((s) => (
           <div key={s.label} className="card p-3 text-center">
@@ -98,7 +109,6 @@ export default function WorldCupSection() {
         ))}
       </div>
 
-      {/* Match cards */}
       <div className="space-y-2">
         {MATCHES.map((m) => {
           const open = openId === m.id
